@@ -1,9 +1,9 @@
 /*
-    SNOOTLAB
-    Application N°1 Shield Mémoire : Stockage des valeurs de temperature dans un fichier texte
+    Utilise un shield Mémoire de Snootlab (RTC + SD Card) + un Shield LCD4884
+    Stockage des valeurs de temperature dans un fichier texte
     avec fonction d'horodatage
-    MàJ: 2 juillet 2012
-    Environnement : linux debian based / IDE Arduino 1.0.1 / Arduino UNO rev3 et Duemilanove
+    MàJ: 26 février 2017
+    Environnement : linux Mint / IDE Arduino 1.6.12 / Arduino UNO
 */
 #include<stdlib.h>                                        //contient la fonction permettant de passer de FloatToString
 #include <LCD4884.h>
@@ -27,6 +27,8 @@ File fichier;
 String datastring;
 char temp_a_afficher[12] = {'T', 'e', 'm','p','=',' ','0','0','.','0','C'};
 char buffer[10];
+char heure[]="00:00:00";
+char jour[]="00/00/0000";
 
 void setup()
 {
@@ -86,17 +88,22 @@ void loop()
   digitalWrite(LED_Write, HIGH);        //Allumer la LED pour indiquer qu'une écriture va commencer
  
   DateTime moment = RTC.now();         //Init de l'objet temporel
-  datastring=String(moment.day(),DEC);
-  datastring+='/';
-  datastring+=String(moment.month(),DEC);
-  datastring+='/';
-  datastring+=String(moment.year(),DEC);
-  datastring+=' ';
-  datastring+=String(moment.hour(),DEC);
-  datastring+=':';
-  datastring+=String(moment.minute(),DEC);
-  datastring+=':';
-  datastring+=String(moment.second(),DEC);
+
+  sprintf(jour,"%02d/%02d/%4d",moment.day(),moment.month(),moment.year());
+  sprintf(heure,"%02d:%02d:%02d",moment.hour(),moment.minute(),moment.second());
+  datastring=String(jour) + " " + String(heure);
+  
+//  datastring=String(moment.day(),DEC);
+//  datastring+='/';
+//  datastring+=String(moment.month(),DEC);
+//  datastring+='/';
+//  datastring+=String(moment.year(),DEC);
+//  datastring+=' ';
+//  datastring+=String(moment.hour(),DEC);
+//  datastring+=':';
+//  datastring+=String(moment.minute(),DEC);
+//  datastring+=':';
+//  datastring+=String(moment.second(),DEC);
  
   float resultTemp = 0.0;
   for(int i =0;i<cycles;i++){
