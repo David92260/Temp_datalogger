@@ -89,7 +89,7 @@ if __name__ == '__main__' :
     axs.set_title(u'Température dans le séjour')
     axs.plot(x, y)
     
-    locs, labs = plt.xticks()
+    locs, labels = plt.xticks()
     plt.xticks(locs[:-1])
     labels[0]=dates[locs[0]]
     labels[1]=dates[locs[1]]    
